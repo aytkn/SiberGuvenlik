@@ -2,7 +2,7 @@
 ## 01.İNFORMATİON GATHERİNG (BİLGİ TOPLAMA) :
 ### PASİF BİLGİ TOPLAMA :
 DMİTRY :	
-Hedef site hakkında bilgi toplamaya yarar. (ip, email, port, domain vb.)
+Hedef site hakkında bilgi toplamaya yarar. (ip, email, port, domain vb.)  
 netcraft :
 	toolbar.netcraft.com sitesinden site report kısmından bilgi toplanabilir. Chrome eklentisi mevcut.
 shodan :
