@@ -1,27 +1,3 @@
-## BUFFER OVERFLOW
-
-    1.	Hedefe fazla veri göndererek çökertebiliyormuyuz dene.(pattern_create ile)
-    2.	Pattern offset ile kaçıncı değerde çöktüğünü bul.
-    3.	EIP veri yazabiliyormuyuz dene.
-    4.	Immunity Debugger’da Mona.py aracıyla uygulamada Ram koruması olmayan yerleri bul
-    !mona modules (Hepsi FALSE olan yerler)
-    5.	JMP ESP(FFE4)  komutunun geçtiği yerleri bul.
-    !mona –find –s “\xff\xe4” –m örnek.dll (hepsi false olan bir dll)
-    6.	Processin Hex değeri bizim EIP’ye yazacağımız değer olacak.
-    7.	Shell kod ile EIP değeri arasına noop kodu yazılır, es vermek için. “\x90” * 50 örnek
-    8.	Hepsini bir değişkene ata ve karşı tarafa socket ile komutu gönder
-
-### generic_send_tcp
-    Hedefe otomatik veri gönderip crash ettirmeye yarayan uygulama.
-    Kullanımı =    “generic_send_tcp host port spike_script 0 0”
-    Spike_scriptler =   usr/share/spike/audits
-### Pattern
-    Usr/share/metasploit-framework/tools/exploit
-    “pattern_create.rb -l 3000”  =>  3000 karakterlik benzersiz kod oluşturur.
-    “pattern_offset.rb -l 3000 –q EIPdeki değer” =>  Kodun kaçıncı karakterine denk gelen sayıyı verir.
-    nasm_shell.rb =>  Girilen kodun hex değerini verir.
-
-
 LINUX TEMEL KOMUTLAR
 
 cp		=	Kopyalama
