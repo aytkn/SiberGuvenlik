@@ -1,1 +1,55 @@
+## 03. WEB APPLİCATİON ANALYSİS (WEB UYGULAMA ANALİZİ) :
 
+### BURPSUİTE : ***
+-	Ücretsiz versiyonu biraz kısıtlı
+-	Zafiyet testi yapılır.
+-	Kaba Kuvvet saldırısı yapar.
+-	Proxy ile sitede değişiklik yapma.  
+> Proxy kullanmak için gerekli olan ayar: Mozilla’da Ayarlar / Advanced / Network / Setting / Manuel proxy seç. http:127.0.0.1  port:8080 , alttaki tik işaretini aktif et  
+Bu sayede site ile sunucu arasına girerek değişiklik yapmaya izin verecek.  
+*intercept on olacak  
+*Her adım için forward tıkla.
+
+> **Sertifika Yükleme**  
+  Https sitelerin içeriğini incelerken sorun yaşamamak için sertifika yüklemek gerekir. Proxy ayarlandıktan sonra tarayıcıya `http://burp` yazarak çıkan sertifika indirilir. Tarayıcı ayarlarından sertifika bölümünden İçe Aktar diyerek sertifika yüklenir.  
+  
+> **Sitelerin IP Kısıtlama Engelini Geçme**  
+  Siteye giriş yapmaya çalış. Burp’de yakalanan bilgilerin altına;  
+  X-Forwarded-For: Girişe izin verilen ip adresini gir.  
+  Forward tıkla. Devam et.  
+  
+### COMMİX :
+    Bir sitenin komut satırını ele geçirme.
+    commix --url=sitenin adı
+
+### HTTRACK :
+    Bir sitenin kopyasını almaya yarar.
+    Proje adı gir / Nereye kaydedileceğini gir / Site adı gir / 5 seçenekten birini seç / Enter / Enter / y
+
+
+### OWASP-ZAP :	***
+    Site zafiyetlerini bularak bilgileri döker. 
+    Alan adı ya da ip adresi gir. Saldırı butonuna tıkla.
+
+### SKİPFİSH :
+	Site hakkında açıklar, resimler vb. bilgileri verir. Kaydedilen dosyada index.html aç.
+	“skipfish -o /root/… http:site adı”
+
+### SQLMAP : ***
+Sql açığı bulunan sitelerde veri tabanına ulaşmamızı sağlar.  
+`sqlmap -u açıklı site linki --dbs` => sitedeki sql açığını kullanarak veri tabanı ismini verecek.  
+`sqlmap -u açıklı site linki -D veri tabanı ismi --tables` => Veri tabanı adını kullanarak tabloları verecek.  
+`sqlmap -u açıklı site linki -D veri tabanı ismi -T table  adı --colums` => Tablo adını kullanarak kolonları verecek.  
+`sqlmap -u açıklı site linki -D veri tabanı ismi -T table  adı -C user_pass --dump` =>kolonun içindeki şifreyi görme  
+
+### WEBSCARAB :
+	Proxy ile veri değiştirir. Spider özelliği ile link toplar.
+
+### WPSCAN:
+	Wordpress sitelerde bilgi toplamaya ve kaba kuvvet saldırısı yapmaya yarar.
+    `wpscan --url site adı --enumerate p`  
+    p= eklentileri bulur
+    u=yönetici adını bulur
+    t=temayı bulur  
+
+    Kaba kuvvet saldırısı => “wpscan --url site adı --username admin --wordlist /root/…”
