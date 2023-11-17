@@ -73,28 +73,7 @@ Daha inandırıcı olması için herhangi bir programla icon resmini değiştire
 Uzantısını değiştirebiliriz;
 Dosya adını kopyala, not defterine yaz. Karakter işlemden sağdan sola methodunu seç. Dosya adını yeniden oluştur.
 
-SİTE ZAFİYETLERİ
 
-Brute Force (Kaba Kuvvet) Saldırısı
-Kullanıcı adı ve parola girilen yerlerde belli bir kısıtlama yoksa sürekli deneme yaparak (wordlist aracılığıyla) kullanıcı adı ve parolayı tespit etmeye yarar. Örnek program “Hydra”
-Command Injection (Komut Enjeksiyonu)
-Bir web uygulaması üzerinde uzaktan kod çalıştırabilme. Text yazılan kısma özel karakter (&&) girdikten sonra yazılan komutlar, komut satırında yazılıyormuş gibi davranır.
-CSRF (Siteler Arası İstek Sahtekârlığı) Zafiyeti 
-Giriş panellerinde oluşan açıktır. Girilen kullanıcı adı ve parola değiştirildiğinde adres satırında girilen değerler yazar. Adres satırından şifreler değişebilir.
-File Inclusion Zafiyeti
-Bulunduğu sistemdeki dosyaları okumaya yarayan araçtır. (etc/passwd dosyasını)
-File Upload Zafiyeti
-Siteye zararlı bir dosya upload ederek ele geçirmek. (Örnek siteye shell atılması)
-php shell atma :  pentestmonkey sitesinden php reverse shell indir. ip ve port değiştir.
-cmd shell örneği :   <?php system ($_GET[‘cmd’]);?>
-Sql Injection Zafiyeti
-“ ’ ” tırnak işareti konduğunda syntax hatası veriyorsa sql açığı olduğunu anlarız.
-Sql Injection (Blind)
-Sql Injection açığından farkı; açık olduğu web sitesine yansıtılmaz yani hata kodu görülmez.
-XSS Reflected Zafiyeti
-Yazı yazılabilen bir alanda bu zafiyet olabilir. Reflected zafiyetinde yazılan kodlar sadece bizi etkiler, siteye kaydedilmez.
-XSS Stored Zafiyeti
-Yapılan işler veri tabanına kaydedilir. Bütün giriş yapan kullanıcılar etkilenir. Html, javascript kodları çalışır.
 PYTHON
 Python dilinde kod yazma :	#!/usr/bin/env python
 Türkçe karakter desteği :	# -*- coding: utf-8 -*-
