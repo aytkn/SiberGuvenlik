@@ -59,19 +59,7 @@ Ettercap çalıştırma:
 // -S -> sslstrip kendimiz yaptığımız için S koymalıyız.
 Virüslü Dosyayı Görsel Dosya İle Birleştirme:
 
-Shellter
-İki farklı dosyayı birleştirmeye yarar. POST EXPLOİTATİON (İSTİSMAR SONRASI) bölümünde var.
-Fake Image Exploiter
-Github’dan indir
-1-	Setting dosyası ayarlarını değiştirme;
-a.	Leafpad ile aç.
-i.	picture extension : jpeg (resim formatını gir)
-ii.	payload extension : exe (trojan formatını gir)
-2-	“bash FakeImageExploiter.sh” -> Programı çalıştır.
-3-	exe dosyayı göster -> jpeg dosyayı göster -> icon seç -> isim gir -> ip gir -> port gir -> metot gir
-Daha inandırıcı olması için herhangi bir programla icon resmini değiştirebiliriz.
-Uzantısını değiştirebiliriz;
-Dosya adını kopyala, not defterine yaz. Karakter işlemden sağdan sola methodunu seç. Dosya adını yeniden oluştur.
+
 
 
 PYTHON
