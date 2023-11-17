@@ -212,14 +212,7 @@ FTP
 •	RAW olarak kayıt etmeniz gerekmektedir.
 Adb Shell ile telefona bağlantı yapılabilir.
 
-OSINT
-Web Sayfa Kaynak Kod Analizi
-Arama terimi	Açıklama
-<!--	Yorumlar
-@	e-mail adresleri
-ca-pub	Google Yayıncı Kimliği
-ua-	Google AdSense Kimliği
-.jpg	Ayrıca diğer resim dosyası uzantılarını deneyin
+
 
 
 Veritabanı
