@@ -1,1 +1,13 @@
+## 02.VULNERABİLİTY ANALYSİS (ZAFİYET AÇIĞI ANALİZİ) :
 
+### GOLİSMERO :
+	Web sitesi üzerinde güvenlik açığı bulma
+	“galismero scan site_adı”
+### LYNİS :
+	Linux ve Unix tabanlı sistemleri inceler, kusurları tespit eder.
+### NİKTO :
+	Site üzerinde zafiyet bulma
+	“nikto -h ip adres ya da sunucu adı”
+### UNİX-PRİVES-CHECK :
+    Sıradan bir kullanıcının, root yetkisine sahip kullanıcının yaptıklarını yapabiliyormu diye test ediyor.Yani root olmayan bir kullanıcıya root’un erişebildiği yetkiler verilip verilmediğine bakar. Tarama sonunda WARNING yazıyorsa root dışında bir kullanıcıya yetki verilmiş demektir.
+	“Unix-prives-check standart”
