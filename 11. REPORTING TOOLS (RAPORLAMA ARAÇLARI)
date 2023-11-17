@@ -1,0 +1,16 @@
+## 11. REPORTING TOOLS (RAPORLAMA ARAÇLARI):
+### Cuty Capt :
+	Web sitelerin ekran görüntülerini almaya yarayan araç.
+	“cutycapt --url=www.google.com --out=/root/çıkarılacak_yer”
+
+### Dradis :	
+	Penetrasyon testlerinde bir grup oluşturulduğunda ortak bir havuzda bilgi toplanmasına yarar.
+### Faraday :
+	Penetrasyon testlerinde yapılan işleri kaydetmeye yarayan araç. Komut satırına yazılan herşeyi kayıt altına alır.
+
+### KeepNote :
+	Geliştirilmiş not defteri aracı.
+### Pipal :
+	Wordlistleri analiz eden bir araç
+### recordmydesktop:
+	Masaüstü görüntüsünü video olarak kaydetmeye yarayan araç.
