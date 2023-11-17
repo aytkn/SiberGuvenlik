@@ -1,0 +1,48 @@
+## 10. FORENSICS (ADLİ ARAÇLAR):
+
+### Autopsy :
+    İmajı alınmış bir sistemin detaylı incelenmesini sağlar.
+    Linke tıklayarak aç -> New Case -> Add host -> İmage dosyası göster / Copy seç -> Add (İncelemeye başlar)
+    
+    İmage alma :
+	“fdisk -l”  -> Tüm diskleri görme
+	“dd if=image yolu of=çıkış yolu
+
+### Binwalk :
+    Donanımların yazılımını inceleyen araç.
+    “binwalk -e airties.bin” -> Airties modemin yazılım dosyası içindekileri inceler.
+
+### Bulk Extractor :
+    Diskleri veya image dosyalarını analiz edip detaylı bilgi edinmeye yarar.
+    “bulk_extractor -o /root/.....    /dev/sda5
+
+### Foremost :
+	Disklerin içerisindeki istediğimiz uzantılı dosyaları bulmaya yarar.
+	“foremost -t png -i /aramanın_olacağı_yer -o /root/kaydedileceği_yer”
+
+### Galleta :
+	İnternet explorerdaki cookie bilgilerini incelemeye yarar.
+	“galleta /cookie dosya yolu.txt > /çıkış yolu
+### Hashdeep :
+	iki dosyanın birbiri ile aynı olup olmadığını inceler.
+	“hashdeep dosya.txt”
+	Hash değeri verir.Hash değerleri karşılaştırılarak dosyanın aynı olup olmadığı anlaşılır.
+
+### Volafox:
+	Mac OS sistemlerde ram analizi yapar.
+	“volafox -i image_yolu -o istenilen parametre”
+### Volatility :
+	Windows sistemlerde ram analizi yapar.
+	Önce ram imajı almak için DumpIt aracını kullanıyoruz.  raw uzantılı dosya oluşturur.
+	İncelemek için :
+	“volatility -f image yolu imageinfo” -> İşletim sistemi bilgisi getirir. Buradaki suggested profil bilgisi kopyalanır.
+	“volatility -f image yolu --profile kopyalanan_suggested_profil_bilgisi hashdump” ile incelenir.
+
+	Komutlar:
+	pslist 		-> Çalışan proses bilgileri
+	imageinfo 	-> İşletim sistemi tespiti
+	pstree		-> İşlemleri ağaç yapısında gösterir
+	dlllist		-> Çalışan tüm dll ler
+	cmdscan	-> cmd de çalıştırılan komutlar
+	consoles	-> cmd de çalıştırılan komutlar
+	iehistory	-> IExplorer tarayıcı geçmişi
