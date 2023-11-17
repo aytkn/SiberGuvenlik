@@ -1,1 +1,200 @@
+## 01.İNFORMATİON GATHERİNG (BİLGİ TOPLAMA) :
+### PASİF BİLGİ TOPLAMA :
+---
+#### Dmitry :
+    Hedef site hakkında bilgi toplamaya yarar. (ip, email, port, domain vb.)
+#### netcraft :
+toolbar.netcraft.com sitesinden site report kısmından bilgi toplanabilir. Chrome eklentisi mevcut.
+#### shodan :
+    www.shodan.io sitesinden bilgi toplanabilir. Özellikle sunucularla ilgili bilgiler. Birçok filtreleme yapılabilir. Filtre yapmak için kayıt olunmalı.
+#### archive.org :
+    Geçmiş tarihlerde alınan site yedeklerine bakma.
+#### whois :
+    `whois ip_adresi` sorgusu ile bilgi elde edinme
+#### host :
+    host komutu ile alan adının ip adresini görürüz.
+#### Kullanıcı adlarından bilgi toplama :
+    Webde bulunan kullanıcı adlarını farklı platformlardan sorgulayarak bu adlara ait farklı bilgiler elde edinilen siteler :  
+    userrecon (linux)  
+    checkusernames  
+    sherlock  
+    knowem  
+#### Ters IP Sorgulaması
+    Aynı sunucuda bulunan başka web sitelerini bulma  
+    www.yougetsignal.com  
+#### SSL Sertifikası Üzerinden Bilgi Toplama
+    `ssllabs.com`  
+    `sslshopper.com`  
+    Kalide komut satırına -> `sslyze //hedef adres` aracıyla tarama yapılabilir.  
+#### robots
+    Arama motorlarında indexleme yapmak istediğimiz dosyaları robots.txt dosyasında belirtiriz. Site adının sonuna `/robots.txt` yazarak sitede index yapılması istenmeyen dosyaları görebiliriz.  
+#### FOCA
+    Metadata analizi yapılır. (office, pdf, svg dosyaları)  
+#### snort
+    Trafik analizi vb.
+#### wappalyzer
+    Web site eklentisi olarak çalışır. Site üzerinde çalışan hizmetleri ve versiyon bilgilerini gösterir.
+#### paping
+    Porta ping atmaya yarar. Windows tabanlı çalışır.  
+    `paping -p port_numarası ip_adresi`
+### AKTİF BİLGİ TOPLAMA :
+---
+#### NETDİSCOVER :
+    Bağlı bulunan ağdaki tüm ip adreslerini ve mac adreslerini gösterir.  
+    `netdiscover -i eth0 -r 192.168.1.0/24` -> Ip aralığındaki tüm ip lere arp sorgusu gönderir ve ağdaki cihazları bulur.
+#### NMAP :
+-	Bilgi toplama aracıdır.
+-	Ağda bulunan cihazları tespit eder.
+-	Ağda bulunan cihazların işletim sistemlerini, portlarını, servisleri, güvenlik duvarlarını tespit eder.  
+`nmap -sS 192.168.1.10`  
++--------------------------------+-----------------------------------------------------------+
+| Parametre                      | Açıklama                                                  |
++================================+===========================================================+
+| -sS                            | En hızlı tarama çeşiti                                    |
++--------------------------------+-----------------------------------------------------------+
+| -sU                            | Udp taraması                                              |
++--------------------------------+-----------------------------------------------------------+
+| -sA                            | Arada firewall varmı onu tarar.                           |
++--------------------------------+-----------------------------------------------------------+
+| -sV                            | Servis taraması                                           |
++--------------------------------+-----------------------------------------------------------+
+| -sn                            | Ayakta olan canlı sistemleri verir.                       |
++--------------------------------+-----------------------------------------------------------+
+| -O                             | İşletim sistemi taraması                                  |
++--------------------------------+-----------------------------------------------------------+
+| -sC                            | Scriptleri içeren tarama                                  |
++--------------------------------+-----------------------------------------------------------+
+| -Pn                            | Pingsiz tarama                                            |
++--------------------------------+-----------------------------------------------------------+
+| -f                             | Paketleri parçalayarak gönderir.(Firewall atlatma tekniği)|
++--------------------------------+-----------------------------------------------------------+
+| -n                             | İsim çözümleme yapmasın                                   |
++--------------------------------+-----------------------------------------------------------+
+| -r                             | Portları sıra numarasına göre sırayla tara                |
++--------------------------------+-----------------------------------------------------------+
+| -oA                            | Çıktıyı tüm formatlarda dosyaya yazdırma.                 |
++--------------------------------+-----------------------------------------------------------+
+| --open                         | Sadece açık portları göster                               |
++--------------------------------+-----------------------------------------------------------+
+| --osscan-guess                 | İşletim sistemi hakkında daha güçlü tahmin eder.          |
++--------------------------------+-----------------------------------------------------------+
+| --interactive                  | nmap komut satırına düşebiliriz                           |
++--------------------------------+-----------------------------------------------------------+
+| --top-ports 100                | En çok kullanılan 100 portu tarar.                        |
++--------------------------------+-----------------------------------------------------------+
+| -p 1-100                       | 1 ile 100 arası portları tarar.                           |
++--------------------------------+-----------------------------------------------------------+
+| -p 1-100 --exclude-ports 23,25 | 1 ile 100 arası portları tarar, 23 ve 25 hariç            |
++--------------------------------+-----------------------------------------------------------+
+| -p-                            | 65536 adet tüm portları tarar.                            |
++--------------------------------+-----------------------------------------------------------+
 
+
+* Port Taraması :  Port bilgisi girilmezse en çok kullanılan 1000 portu tarar. 
+
+* `--script script_adı`  ile script taraması yapar. scriptler internetten indirilebilir. `nmap/script` klasörü içinde olmalı.   
+`nmap --script vuln site adı ya da ip adresi`   
+`(vuln : Birçok script var. Scriptleri görmek için : “locate *.nse”)`  
+
+* script ile firewall atlatma:	`--script=firewall-bypass.nse` 
+
+* `nmap -D RND:5 ip adresi`	//RND:5 => rastgele üretilecek ip adres sayısı   
+	Rastgele atanmış ip adresleri gönderip trafik oluşturarak güvenlik duvarını atlatmaya çalışır.
+
+#### nbtscan :
+    `nbtscan 10.0.2.0/24`  -> netdiscoverdan farkı biri arp sorgusu yapar, nbtscan ise netbios sorgusu yapar.   Dezavantajı karşı tarafın netbios’u kapalıysa onu tespit edemeyebilir.
+
+#### superscan
+    Windows üzerinden port tarama yapılır.  
+
+#### Güvenlik Duvarı Tespit Etme
+    `wafw00f`  github dan indir.  
+    `wafw00f ip adresi yada domain adı`  
+    `wafw00f -l` -> Tespit edilen güvenlik duvarlarını gösterir.  
+
+#### Alt Domain Tespit Etme
+##### fierce 
+`fierce -dns site adı -wordlist /wordlist_yolu`
+##### sublist3r
+
+##### Subfinder
+`Subfinder -v -d "site adı"`
+
+#### E-mail Tespit Etme
+##### theHarvester :
+    Birçok farklı platformdan faydalanarak bilgi çeker. En çok kullanılan aktif ve pasif bilgi toplama araçlarından biridir.
+    `theHarvester -d hedef_adı -l 500 -b all`  
+    -l  =  arama sayfa sayısı  
+    -b = nerede aranacağı
+
+#### Benzer İsimde Domain Tespit Etme
+##### urlcrazy
+
+#### Hedefte Dizin Arama
+##### dirbuster
+`dirb http://site adı`  
+    Site adının sonuna kendi wordlistinde bulunan kelimeleri ekler. Brute force saldırısı yapar. Sitedeki dizinleri bulur.  
+    -S = Sadece başarılı çıktıları göster.  
+    -r = Alt dizinlerde taramayı engeller.Sadece ana dizini arar.  
+    -X .php = sadece php uzantılı sayfaları tarar.  
+
+#### Sitede Açık Arama
+##### Vega
+##### w3af
+##### nessus
+    Network testlerinde daha başarılı
+    Sitesinden ilgili sürümü indir.  
+`dpkg -i Nessus-10.5.1-debian10_amd64.deb`  
+`/bin/systemctl start nessusd.service`  
+`systemctl start nessusd`  
+`systemctl enable nessusd`  
+`https://kali:8834`
+
+##### acunetix
+    Windows için Web Testlerinde daha başarılı
+#### Bilinmeyen Dosya Hakkında Bilgi
+##### exiftool
+`exiftool dosya adı`
+##### strings
+`strings dosya adı`
+#### SMB Zafiyet Analizi
+**enum4linuz** aracıyla tarama yapılabilir.  
+`smbclient –L hedef_ip` ile sistemde paylaşılan dosyalar görülebilir.  
+
+### Google Hacking Database
+    İlgili dorklar kullanılarak google üzerinden zafiyet tarar.
+
+### DNS Keşfi Yapma
+`nslookup domain adı`  
+`dig domain adı`  
+Dnsdumpster.com  
+Securitytrails.com  
+
+### DNMAP-SERVER, DNMAP CLİENT : 
+    Ip bilgisi girerek ayrıntılı port taramaya yarar. Birden fazla hedef belirtilebilir.
+### İKE-SCAN :
+    Girilen hedef ip adreslerinin VPN olup olmadığını gösterir.
+### MALTEGO : ***
+	Hedef hakkında internet üzerinde bulunan tüm bilgileri gösterir. Maltego CE ücretsiz sürümü.
+
+### POF :
+	Bilgisayar ve kullanıcıların hangi server’a bağlandığını gösterir.
+
+### RECON-NG :
+	Sunucu ve web siteleri hakkında bilgi toplamaya yarar.
+    1-	`show modüles` komutu ile kullanılacak modülleri görürüz.
+    2-	`use seçtiğin_modül_adı`
+    3-	`show options`
+    4-	`set SOURCE site_adı`
+    5-	`run`
+	
+### SPARTA :
+	Lokal ağda zafiyet tespiti, açık port tespiti, açık portlara kaba kuvvet saldırısı yapar
+### ZENMAP :
+	Nmap programının görsel halidir
+	Lokal ve genel ağ üzerinde tarama yapar.
+	***(intense scan : En detaylı tarama)
+
+
+### metagoofil :
+	metagoofil -d google.com
