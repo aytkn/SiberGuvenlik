@@ -1,1 +1,25 @@
+## 04. DATABASE ASSESSMENT (VERİTABANI DEĞERLENDİRME) :
+	
+### HEXOR BASE : ***
+		Veri tabanlarını yönetmeyi sağlar. Kaba kuvvet  saldırısı yapar. Görsel arayüzlüdür.
+### JSQL İNJECTİON :
+    Sql zafiyeti bulunan sitelerin veritabanını ele geçirir. 
+    Açıklı site adını yaz / Enter.  Tablolardan içeriğine bakarsın.
+### MDB_SQL :
+	2007 yılı öncesi mdb uzantılı veri tabanını destekliyor.Kullanılmıyor.
+### OSCANNER :
+	Oracle veri tabanını kullanan sunucularda bilgi toplamaya yarar. Programın desteği yok, kullanılmıyor.
+### SİDGUESSER :
+	Oracle veri tabanı kullanan sistemlerde kaba kuvvet saldırısı yaparak veri tabanı adlarını tespit etmeye yarar.
+    “sidguess -i ip adresi -d /root/…liste dosyası -p port no”
+    liste dosyası => Listedeki veri tabanı adları o sitedeki veri tabanında var mı diye kontrol eder.
+### SQL DİCT :
+	Sql serverlere kaba kuvvet saldırısı yapar.
+    Server ip adresi yaz / Parolaların bulunduğu wordlist’i yükle / Target accont : administrator / Başlat
+### SQL LİTE DATABROWSER :
+	Veri tabanı oluşturmaya yarar. Var olan veri tabanını açmaya yarar.
 
+### TNSCMD10G :
+	Oracle veri tabanlarında bilgi toplamaya yarar.
+    Oracle default port : 1521
+    `tnscmd10g version -h ip adresi(site ip)`
