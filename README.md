@@ -13,8 +13,8 @@
     “apt-get install tor -y”  
     “apt-get install proxychains”  
     leafpad /etc/proxychains.conf  
-    #dynamic\_chain    //# işaretini sil  
-    #strict\_chain        //# işareti ekle  
+     #dynamic\_chain    //# işaretini sil  
+     #strict\_chain        //# işareti ekle  
     En alttaki socks4 -> socks5 yap. Kaydet  
     Tarayıcıda : proxy ayarları -> manuel ayarları seç. socks host : 127.0.0.1  port: 9050 gir  
     Tor ağını başlat    =>    “service tor start”  
