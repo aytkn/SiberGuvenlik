@@ -168,15 +168,15 @@
 
 ### Mobil (Android) Güvenliği
 
-Kullanılan araçlar: 
-apktool , jadx = apk yada ipa uzantılı dosyaların içeriğindeki kodları okumaya yarar.  
-AndrodBugs     = otomatik analizler gerçekleştirir, uygulamanın kullandığı güvenlik önlemlerini gösterir.  
+    Kullanılan araçlar: 
+    apktool , jadx = apk yada ipa uzantılı dosyaların içeriğindeki kodları okumaya yarar.  
+    AndrodBugs     = otomatik analizler gerçekleştirir, uygulamanın kullandığı güvenlik önlemlerini gösterir.  
 
-Sanal Android Uygulama = Android studio , Genymotion, Android x86 ( Fiziksel cihaz yerine sanal android oluşturma)  
+    Sanal Android Uygulama = Android studio , Genymotion, Android x86 ( Fiziksel cihaz yerine sanal android oluşturma)  
 
-Taşınabilir Android Pentest Aracı = Appie (Windows)  
+    Taşınabilir Android Pentest Aracı = Appie (Windows)  
 
-Yapman gereken işlemler:
+    Yapman gereken işlemler:
     1    Apk kurmadan önce nelere karşı önlem alınmış onları bilmek gerekir.  
     2    Normal kullanıcı gibi apk yı yükle ve nasıl çalıştığını anlamak için kurcala.  
     3    Uygulamanın yaptığı işlemleri izlemek için wireshake ve burp aracı ile network ve veri trafiği izlenebilir.  
